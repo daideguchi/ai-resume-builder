@@ -1,103 +1,109 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import { FileText, Download } from 'lucide-react';
+import SmartForm from '@/components/SmartForm';
+import DocumentPreview from '@/components/DocumentPreview';
+import ExportOptions from '@/components/ExportOptions';
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const [currentStep, setCurrentStep] = useState<number>(1);
+  const [formData, setFormData] = useState<Record<string, string>>({});
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const handleFormComplete = (data: Record<string, string>) => {
+    setFormData(data);
+    setCurrentStep(2);
+  };
+
+  const handleBackToForm = () => {
+    setCurrentStep(1);
+  };
+
+  const handleExportComplete = () => {
+    setCurrentStep(1);
+    setFormData({});
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
+      <div className="max-w-6xl mx-auto">
+        {/* ヘッダー */}
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-bold text-black mb-4 flex items-center justify-center">
+            <FileText className="w-10 h-10 text-blue-600 mr-4" />
+            AI履歴書・職務経歴書作成ツール
+          </h1>
+          <p className="text-black text-lg max-w-2xl mx-auto">
+            AIが自動で内容を最適化・補完して、プロフェッショナルな履歴書を作成します
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+
+        {/* ステップインジケーター */}
+        <div className="flex items-center justify-center mb-8">
+          <div className="flex items-center space-x-4">
+            <div className={`flex items-center ${currentStep === 1 ? 'text-blue-600' : 'text-gray-400'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                currentStep === 1 ? 'bg-blue-600 text-white' : 'bg-gray-200'
+              }`}>
+                1
+              </div>
+              <span className="ml-2 font-medium">AI入力フォーム</span>
+            </div>
+            <div className="w-12 h-px bg-gray-300"></div>
+            <div className={`flex items-center ${currentStep === 2 ? 'text-blue-600' : 'text-gray-400'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                currentStep === 2 ? 'bg-blue-600 text-white' : 'bg-gray-200'
+              }`}>
+                2
+              </div>
+              <span className="ml-2 font-medium">プレビュー</span>
+            </div>
+            <div className="w-12 h-px bg-gray-300"></div>
+            <div className={`flex items-center ${currentStep === 3 ? 'text-blue-600' : 'text-gray-400'}`}>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${
+                currentStep === 3 ? 'bg-blue-600 text-white' : 'bg-gray-200'
+              }`}>
+                3
+              </div>
+              <span className="ml-2 font-medium">エクスポート</span>
+            </div>
+          </div>
+        </div>
+
+        {/* メインコンテンツ */}
+        {currentStep === 1 && (
+          <SmartForm onComplete={handleFormComplete} />
+        )}
+
+        {currentStep === 2 && (
+          <div className="space-y-6">
+            <DocumentPreview data={formData} />
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={handleBackToForm}
+                className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200"
+              >
+                フォームに戻る
+              </button>
+              <button
+                onClick={() => setCurrentStep(3)}
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-200 flex items-center gap-2"
+              >
+                <Download className="w-5 h-5" />
+                エクスポート
+              </button>
+            </div>
+          </div>
+        )}
+
+        {currentStep === 3 && (
+          <ExportOptions 
+            data={formData} 
+            onComplete={handleExportComplete}
+            onBack={() => setCurrentStep(2)}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        )}
+      </div>
     </div>
   );
 }
