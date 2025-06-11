@@ -4,8 +4,8 @@ import { User, Calendar, MapPin, Phone, Mail, GraduationCap, Briefcase, Award, S
 
 interface DocumentPreviewProps {
   data: Record<string, string>;
-  onConfirm: () => void;
-  onEdit: () => void;
+  onConfirm?: () => void;
+  onEdit?: () => void;
 }
 
 export default function DocumentPreview({ data, onConfirm, onEdit }: DocumentPreviewProps) {
@@ -178,22 +178,28 @@ export default function DocumentPreview({ data, onConfirm, onEdit }: DocumentPre
       </div>
 
       {/* アクションボタン */}
-      <div className="flex justify-center space-x-4 mt-8">
-        <button
-          onClick={onEdit}
-          className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-colors duration-200"
-        >
-          <Edit className="w-5 h-5" />
-          編集に戻る
-        </button>
-        <button
-          onClick={onConfirm}
-          className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-colors duration-200 shadow-lg"
-        >
-          <Eye className="w-5 h-5" />
-          この内容で完了
-        </button>
-      </div>
+      {(onEdit || onConfirm) && (
+        <div className="flex justify-center space-x-4 mt-8">
+          {onEdit && (
+            <button
+              onClick={onEdit}
+              className="bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-colors duration-200"
+            >
+              <Edit className="w-5 h-5" />
+              編集に戻る
+            </button>
+          )}
+          {onConfirm && (
+            <button
+              onClick={onConfirm}
+              className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg flex items-center gap-2 transition-colors duration-200 shadow-lg"
+            >
+              <Eye className="w-5 h-5" />
+              この内容で完了
+            </button>
+          )}
+        </div>
+      )}
 
       {/* 注意事項 */}
       <div className="mt-6 bg-blue-50 p-4 rounded-lg">

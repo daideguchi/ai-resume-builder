@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { User, Calendar, MapPin, Phone, Mail, GraduationCap, Briefcase, Award, Star, ArrowRight, Calculator, Plus, Trash2, Sparkles, Loader } from 'lucide-react';
+import { User, GraduationCap, Briefcase, Star, ArrowRight, Calculator, Plus, Trash2, Sparkles, Loader } from 'lucide-react';
 
 interface SmartFormProps {
   onComplete: (data: Record<string, string>) => void;
@@ -770,4 +770,3 @@ JavaScript, React
     </div>
   );
 }
-</rewritten_file>

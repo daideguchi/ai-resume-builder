@@ -11,7 +11,7 @@ interface ExportOptionsProps {
   onComplete: () => void;
 }
 
-export default function ExportOptions({ data, onBack, onComplete }: ExportOptionsProps) {
+export default function ExportOptions({ data, onBack }: ExportOptionsProps) {
   const [isExporting, setIsExporting] = useState(false);
   const [exportedFiles, setExportedFiles] = useState<string[]>([]);
 
